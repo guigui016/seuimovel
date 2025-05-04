@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SeuImóvel - Login e Cadastro</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="left">
+    <div class="overlay">
+      <div class="logo">
+        <img src="https://img.icons8.com/ios-filled/100/000000/home.png" alt="Logo" />
+        <div class="logo-text">SEUIMÓVEL</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="right active" id="loginSection">
+    <div class="user-icon">
+      <img src="https://img.icons8.com/ios-filled/50/1e1f26/user.png" alt="User" />
+    </div>
+    <label for="usuario">Email:</label>
+    <input type="text" id="usuario" name="usuario" />
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" name="senha" />
+
+    <button class="btn" onclick="logar()">LOGAR</button>
+    <button class="btn" onclick="mostrarCadastro()">CADASTRAR</button>
+
+    <div class="bottom-icons">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/sun.png" alt="Sol" />
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/cloud.png" alt="Nuvem" />
+      <img src="casa.png" alt="Casa" />
+      <img src="arvore.png" alt="Árvore" />
+    </div>
+  </div>
+
+  <!-- CADASTRO -->
+  <div class="right" id="cadastroSection">
+    <div class="user-icon">
+      <img src="https://img.icons8.com/ios-filled/50/1e1f26/add-user-male.png" alt="Cadastro" />
+    </div>
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" />
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" />
+
+    <label for="novaSenha">Senha:</label>
+    <input type="password" id="novaSenha" name="novaSenha" />
+
+    <label for="tipoUsuario">Tipo de usuário:</label>
+    <select id="tipoUsuario" name="tipoUsuario">
+      <option value="imobiliaria">Imobiliária</option>
+      <option value="autonomo">Autônomo</option>
+    </select>
+
+    <button class="btn" onclick="cadastrar()">CRIAR CONTA</button>
+    <button class="btn" onclick="voltarLogin()">VOLTAR</button>
+  </div>
+
+  <script>
+    function mostrarCadastro() {
+      document.getElementById('loginSection').classList.remove('active');
+      document.getElementById('cadastroSection').classList.add('active');
+    }
+
+    function voltarLogin() {
+      document.getElementById('cadastroSection').classList.remove('active');
+      document.getElementById('loginSection').classList.add('active');
+    }
+
+    function cadastrar() {
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('novaSenha').value;
+      const tipo = document.getElementById('tipoUsuario').value;
+
+      if (!nome || !email || !senha) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const usuario = {
+        nome,
+        email,
+        senha,
+        tipo
+      };
+
+      localStorage.setItem('usuarioCadastrado', JSON.stringify(usuario));
+      alert("Cadastro realizado com sucesso!");
+
+      voltarLogin();
+    }
+
+    function logar() {
+      const emailDigitado = document.getElementById('usuario').value;
+      const senhaDigitada = document.getElementById('senha').value;
+
+      const usuarioSalvo = JSON.parse(localStorage.getItem('usuarioCadastrado'));
+
+      if (!usuarioSalvo) {
+        alert("Nenhum usuário cadastrado.");
+        return;
+      }
+
+      if (emailDigitado === usuarioSalvo.email && senhaDigitada === usuarioSalvo.senha) {
+        alert(`Login realizado com sucesso!\nBem-vindo, ${usuarioSalvo.nome} (${usuarioSalvo.tipo})`);
+      } else {
+        alert("Email ou senha incorretos.");
+      }
+    }
+  </script>
+</body>
+</html>
